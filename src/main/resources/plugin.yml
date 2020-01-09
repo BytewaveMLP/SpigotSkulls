@@ -1,0 +1,10 @@
+name: SpigotSkulls
+version: 1.0.0
+author: Bytewave
+main: horse.code.spigotskulls.SpigotSkulls
+api-version: 1.15
+commands:
+  skull:
+    description: Get a player skull
+    usage: |
+      /skull [player]

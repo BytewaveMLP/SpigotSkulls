@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+group 'horse.code'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+    }
+    maven {
+        url "https://oss.sonatype.org/content/groups/public"
+    }
+}
+
+dependencies {
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT', {
+        ext { fatJarExclude = true }
+    }
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

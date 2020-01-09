@@ -11,11 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.io.IOException;
-import java.util.UUID;
-
 public class SkullCommand implements CommandExecutor {
 	@Override
+	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Only living players can get skulls!");
@@ -23,21 +21,7 @@ public class SkullCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		OfflinePlayer target = player;
-		if (args.length > 0) {
-			UUID uuid;
-			try {
-				uuid = Util.getPlayerUUIDFromName(args[0]);
-			} catch (IOException e) {
-				sender.sendMessage(ChatColor.RED + "Failed to fetch player data.");
-				return true;
-			} catch (RuntimeException e) {
-				sender.sendMessage(ChatColor.RED + "Couldn't get a skull for player " + target.getName() + ".");
-				return true;
-			}
-
-			target = Bukkit.getOfflinePlayer(uuid);
-		}
+		OfflinePlayer target = args.length > 0 ? Bukkit.getOfflinePlayer(args[0]) : player;
 
 		ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 		skull.setAmount(1);

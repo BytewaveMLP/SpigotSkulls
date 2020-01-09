@@ -14,4 +14,4 @@ server's plugin directory.
 
 ## License
 
-Copyright (C) 2019 Eliot Partridge. Licensed under the [ISC License](/LICENSE).
+Copyright (C) 2020 Eliot Partridge. Licensed under the [ISC License](/LICENSE).

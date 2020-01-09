@@ -3,6 +3,7 @@ package horse.code.spigotskulls;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,29 +23,29 @@ public class SkullCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		String targetName = player.getDisplayName();
+		OfflinePlayer target = player;
 		if (args.length > 0) {
-			targetName = args[0];
+			UUID uuid;
+			try {
+				uuid = Util.getPlayerUUIDFromName(args[0]);
+			} catch (IOException e) {
+				sender.sendMessage(ChatColor.RED + "Failed to fetch player data.");
+				return true;
+			} catch (RuntimeException e) {
+				sender.sendMessage(ChatColor.RED + "Couldn't get a skull for player " + target.getName() + ".");
+				return true;
+			}
+
+			target = Bukkit.getOfflinePlayer(uuid);
 		}
 
 		ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 		skull.setAmount(1);
 
 		SkullMeta meta = (SkullMeta) skull.getItemMeta();
-		meta.setDisplayName(targetName + "'s Head");
+		meta.setDisplayName(target.getName() + "'s Head");
 
-		UUID uuid;
-		try {
-			uuid = Util.getPlayerUUIDFromName(targetName);
-		} catch (IOException e) {
-			sender.sendMessage(ChatColor.RED + "Failed to fetch player data.");
-			return true;
-		} catch (RuntimeException e) {
-			sender.sendMessage(ChatColor.RED + "Couldn't get a skull for player " + targetName + ".");
-			return true;
-		}
-
-		meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+		meta.setOwningPlayer(target);
 		skull.setItemMeta(meta);
 
 		player.getInventory().addItem(skull);

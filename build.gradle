@@ -1,14 +1,15 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
 }
 
 group 'horse.code'
-version '1.2.0-SNAPSHOT'
+version '1.2.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+    jcenter()
 
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
@@ -19,14 +20,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT', {
+    shadow 'org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT', {
         ext { fatJarExclude = true }
     }
     testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-jar {
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
 }
